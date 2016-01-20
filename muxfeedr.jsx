@@ -1,5 +1,5 @@
 // Define a collection to hold our tasks
-Tasks = new Mongo.Collection("tasks");
+Links = new Mongo.Collection("links");
 
 if (Meteor.isClient) {
   // This code is executed on the client only

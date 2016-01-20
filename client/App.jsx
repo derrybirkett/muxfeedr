@@ -6,7 +6,7 @@ App = React.createClass({
   // Loads items from the Tasks collection and puts them on this.data.tasks
   getMeteorData() {
    return {
-     tasks: Tasks.find({}, {sort: {createdAt: -1}}).fetch()
+     links: Links.find({}, {sort: {createdAt: -1}}).fetch()
    }
   },
 
@@ -14,21 +14,24 @@ App = React.createClass({
     event.preventDefault();
 
     // Find the text field via the React ref
-    var text = React.findDOMNode(this.refs.textInput).value.trim();
+    var title = React.findDOMNode(this.refs.LinkTitle).value.trim();
+    var url = React.findDOMNode(this.refs.LinkUrl).value.trim();
 
-    Tasks.insert({
-      text: text,
+    Links.insert({
+      url: url,
+      title: title,
       createdAt: new Date() // current time
     });
 
     // Clear form
-    React.findDOMNode(this.refs.textInput).value = "";
+    React.findDOMNode(this.refs.LinkUrl).value = "";
+    React.findDOMNode(this.refs.LinkTitle).value = "";
   },
 
-  renderTasks() {
-   // Get tasks from this.data.tasks
-   return this.data.tasks.map((task) => {
-     return <Task key={task._id} task={task} />;
+  renderLinks() {
+   // Get links from this.data.links
+   return this.data.links.map((link) => {
+     return <Link key={link._id} link={link} />;
    });
   },
 
@@ -36,18 +39,28 @@ App = React.createClass({
     return (
       <div className="container">
         <header>
-          <h1>Todo List</h1>
+          <h1>UX Links</h1>
 
-          <form className="new-task" onSubmit={this.handleSubmit} >
+          <form className="new-link" onSubmit={this.handleSubmit} >
+            <input
+              type="text"
+              ref="LinkTitle"
+              placeholder="Title" />
+
              <input
                type="text"
-               ref="textInput"
-               placeholder="Type to add new tasks" />
+               ref="LinkUrl"
+               placeholder="Paste new url" />
+
+               <input
+                 type="submit"
+                 value="Submit Link" />
+
            </form>
         </header>
 
         <ul>
-          {this.renderTasks()}
+          {this.renderLinks()}
         </ul>
       </div>
     );
